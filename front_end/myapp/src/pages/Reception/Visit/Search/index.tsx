@@ -95,9 +95,8 @@ const TableList: React.FC = () => {
   const intl = useIntl();
   const columns: ProColumns<TableListItem>[] = [
     {
-      title: '规则名称',
+      title: '客户名称',
       dataIndex: 'name',
-      tip: '规则名称是唯一的 key',
       render: (dom, entity) => {
         return (
           <a
@@ -112,12 +111,12 @@ const TableList: React.FC = () => {
       },
     },
     {
-      title: '描述',
+      title: '电话号码',
       dataIndex: 'desc',
       valueType: 'textarea',
     },
     {
-      title: '服务调用次数',
+      title: '来访目的',
       dataIndex: 'callNo',
       sorter: true,
       hideInForm: true,
@@ -128,30 +127,7 @@ const TableList: React.FC = () => {
         })}`,
     },
     {
-      title: '状态',
-      dataIndex: 'status',
-      hideInForm: true,
-      valueEnum: {
-        0: {
-          text: '关闭',
-          status: 'Default',
-        },
-        1: {
-          text: '运行中',
-          status: 'Processing',
-        },
-        2: {
-          text: '已上线',
-          status: 'Success',
-        },
-        3: {
-          text: '异常',
-          status: 'Error',
-        },
-      },
-    },
-    {
-      title: '上次调度时间',
+      title: '来访时间',
       sorter: true,
       dataIndex: 'updatedAt',
       valueType: 'dateTime',
@@ -176,25 +152,6 @@ const TableList: React.FC = () => {
 
         return defaultRender(item);
       },
-    },
-    {
-      title: '操作',
-      dataIndex: 'option',
-      valueType: 'option',
-      render: (_, record) => [
-        <a
-          key="config"
-          onClick={() => {
-            handleUpdateModalVisible(true);
-            setCurrentRow(record);
-          }}
-        >
-          配置
-        </a>,
-        <a key="subscribeAlert" href="https://procomponents.ant.design/">
-          订阅警报
-        </a>,
-      ],
     },
   ];
   return (

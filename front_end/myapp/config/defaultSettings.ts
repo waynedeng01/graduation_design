@@ -12,10 +12,13 @@ const Settings: LayoutSettings & {
   fixedHeader: false,
   fixSiderbar: true,
   colorWeak: false,
-  title: 'Ant Design Pro',
+  title: '养老管理系统',
   pwa: false,
   logo: 'https://gw.alipayobjects.com/zos/rmsportal/KDpgvguMpGfqaHPjicRK.svg',
   iconfontUrl: '',
+  headerHeight: 48,
+  splitMenus: false,
+  footerRender: false
 };
 
 export default Settings;
