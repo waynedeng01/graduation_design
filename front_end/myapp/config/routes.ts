@@ -62,6 +62,13 @@
     component:"./Bill"
   },
   {
+    path: '/person_msg',
+    name: '老人档案',
+    icon: "UnorderedListOutlined",
+    access: 'canAdmin',
+    component:"./Bill"
+  },
+  {
     component: './404',
   },
 ];
