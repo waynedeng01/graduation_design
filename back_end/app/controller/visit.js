@@ -33,8 +33,7 @@ class VisitController extends Controller {
   // 来访录入
   async create() {
     const { ctx } = this;
-    // ctx.validate(this.createRule);
-    // todo 解决插入校验的问题
+    ctx.validate(this.createRule);
     const id = await ctx.service.visit.create(ctx.request.body);
     ctx.body = {
       insertId: id,

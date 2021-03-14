@@ -12,6 +12,12 @@ export default {
       changeOrigin: true,
       pathRewrite: { '^': '' },
     },
+    // 复用登录API，自定义API采用其他代理
+    '/capi/v2/': {
+      target: 'http://localhost:7001',
+      changeOrigin: true,
+      pathRewrite: { '^': '' },
+    },
   },
   test: {
     '/api/': {

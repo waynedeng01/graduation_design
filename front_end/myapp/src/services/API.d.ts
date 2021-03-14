@@ -19,6 +19,10 @@ declare namespace API {
     type?: string;
   };
 
+  export type createVisitStateType = {
+    insertId?: number;
+  };
+
   export type NoticeIconData = {
     id: string;
     key: string;
