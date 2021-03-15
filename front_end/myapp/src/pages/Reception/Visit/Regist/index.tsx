@@ -13,7 +13,8 @@ const handleSubmit = async (values: createRule) => {
       return;
     }
   } catch (error) {
-    message.error('登记失败，请重试！');
+    // todo 处理掉全局错误，自定义弹出错误的时候不要连着弹全局
+    message.error('登记失败，请使用未登记过的手机号码！');
   }
 };
 

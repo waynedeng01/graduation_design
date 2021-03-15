@@ -57,16 +57,16 @@
   {
     path: '/bill',
     name: '收费管理',
-    icon: "TransactionOutlined",
+    icon: 'TransactionOutlined',
     access: 'canAdmin',
-    component:"./Bill"
+    component: './Bill',
   },
   {
     path: '/person_msg',
     name: '老人档案',
-    icon: "UnorderedListOutlined",
+    icon: 'UnorderedListOutlined',
     access: 'canAdmin',
-    component:"./Bill"
+    component: './Detail',
   },
   {
     component: './404',

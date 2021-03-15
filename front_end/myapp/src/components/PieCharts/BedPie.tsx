@@ -2,15 +2,16 @@
 import React from 'react';
 import { Pie } from '@ant-design/charts';
 
-const BedPie: React.FC = () => {
+const BedPie: React.FC<{ unliveNum: number }> = (props) => {
+  const { unliveNum } = props;
   var data = [
     {
       type: '已住床位',
-      value: 50,
+      value: 15 - unliveNum,
     },
     {
       type: '剩余床位',
-      value: 50,
+      value: unliveNum,
     },
   ];
   var config = {
