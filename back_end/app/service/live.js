@@ -17,6 +17,14 @@ class LiveService extends Service {
     return list;
   }
 
+  // 获取入住客户的基础信息用于护理管理护理对象排班
+  async getCaredUser() {
+    const list = await this.app.mysql.select('live_msg', {
+      columns: [ 'idCard', 'name' ],
+    });
+    return list;
+  }
+
   // 获取床位相关信息
   async new() {
     // 假定15个房间

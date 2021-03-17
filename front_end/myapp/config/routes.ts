@@ -73,7 +73,18 @@
     name: '护理管理',
     icon: 'HeartOutlined',
     access: 'canAdmin',
-    component: './Care',
+    routes: [
+      {
+        path: '/care_management/sub-page',
+        name: '护理排班',
+        component: './Care',
+      },
+      {
+        path: '/care_management/sub-page1',
+        name: '排班记录',
+        component: './Care/Search',
+      },
+    ],
   },
   {
     component: './404',

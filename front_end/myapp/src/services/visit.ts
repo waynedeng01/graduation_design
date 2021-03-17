@@ -11,6 +11,13 @@ export type createRule = {
   require_description: string;
 };
 
+export type createCare = {
+  cared_user: string;
+  cared_date: Date;
+  cared_project: ('doctor' | 'fruit' | 'gift')[];
+  care_staff: string;
+};
+
 export async function createVisit(params: createRule) {
   return request<API.createVisitStateType>('/capi/v2/visit', {
     method: 'POST',
@@ -22,6 +29,15 @@ export async function createVisit(params: createRule) {
 // 创建入住
 export async function createLive(params: detailsObj) {
   return request<API.createVisitStateType>('/capi/v2/live', {
+    method: 'POST',
+    data: params,
+    headers: { 'x-csrf-token': Cookies.get('csrfToken') },
+  });
+}
+
+// 新增护理记录
+export async function createCareRecord(params: createCare) {
+  return request<API.createVisitStateType>('/capi/v2/care', {
     method: 'POST',
     data: params,
     headers: { 'x-csrf-token': Cookies.get('csrfToken') },

@@ -10,6 +10,10 @@ module.exports = app => {
   app.router.resources('visit', '/capi/v2/visit', controller.visit);
   // 入住
   app.router.resources('live', '/capi/v2/live', controller.live);
-  // 避免冲突
+  // 护理管理
+  app.router.resources('care', '/capi/v2/care', controller.care);
+
+  // 单独隔离的出来的路由
   app.router.get('/capi/v2/idCard', controller.live.getIdCard);
+  app.router.get('/capi/v2/caredUser', controller.live.getCaredUser);
 };
