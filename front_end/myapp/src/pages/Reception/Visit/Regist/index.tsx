@@ -3,6 +3,7 @@ import { Card, message } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProForm, { ProFormText, ProFormDatePicker, ProFormTextArea } from '@ant-design/pro-form';
 import { createRule, createVisit } from '@/services/visit';
+import moment from 'moment';
 
 const handleSubmit = async (values: createRule) => {
   try {
@@ -51,6 +52,12 @@ export default () => {
               placeholder="目的描述"
             />
             <ProFormDatePicker
+              // @ts-ignore
+              fieldProps={{
+                disabledDate: (current: any) => {
+                  return current && current < moment().endOf('day');
+                },
+              }}
               width="md"
               rules={[{ type: 'date', required: true }]}
               name="visit_date"

@@ -3,6 +3,7 @@ import { Card, message } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProForm, { ProFormDatePicker, ProFormSelect } from '@ant-design/pro-form';
 import { createRule, createVisit } from '@/services/visit';
+import moment from 'moment';
 
 const careMap = {
   doctor: '医疗',
@@ -39,6 +40,10 @@ export default () => {
         >
           <ProForm.Group>
             <ProFormDatePicker
+              // @ts-ignore
+              fieldProps={{
+                disabledDate: (current: any) => current && current < moment().endOf('day'),
+              }}
               allowClear={false}
               width="sm"
               rules={[{ type: 'date', required: true }]}

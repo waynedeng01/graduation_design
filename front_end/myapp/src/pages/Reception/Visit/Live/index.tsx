@@ -7,6 +7,7 @@ import BedPie from '../../../../components/PieCharts/BedPie';
 import request from 'umi-request';
 import { detailsObj } from '@/pages/Detail/Detail';
 import { createLive } from '@/services/visit';
+import moment from 'moment';
 
 export const maleMap = {
   male: '男',
@@ -111,6 +112,10 @@ export default () => {
                 }}
               ></ProFormSelect>
               <ProFormDatePicker
+                // @ts-ignore
+                fieldProps={{
+                  disabledDate: (current: any) => current && current < moment().endOf('day'),
+                }}
                 width="sm"
                 rules={[{ type: 'date', required: true }]}
                 name="live_date"
