@@ -87,6 +87,13 @@
     ],
   },
   {
+    path: '/hr_management',
+    name: '人事管理',
+    icon: 'ScheduleOutlined',
+    access: 'canAdmin',
+    component: './Hr',
+  },
+  {
     component: './404',
   },
 ];

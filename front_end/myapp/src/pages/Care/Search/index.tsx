@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tag, Space, Typography } from 'antd';
+import { Tag, Space } from 'antd';
 import ProList from '@ant-design/pro-list';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import request from 'umi-request';
@@ -8,7 +8,7 @@ import { careMap } from '../index';
 
 function transUnix(timeStamp: string): string {
   const date = new Date(Number(timeStamp));
-  return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+  return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}`;
 }
 
 function chooseColor(index: number): string {
@@ -50,10 +50,8 @@ export default () => (
           render: (_, row) => {
             return (
               <Space size={25}>
-                <Typography.Paragraph>护理对象：{row.cared_user}</Typography.Paragraph>
-                <Typography.Paragraph>
-                  护理日期：{new Date(row.cared_date).toLocaleDateString()}
-                </Typography.Paragraph>
+                护理对象：{row.cared_user}
+                护理日期：{new Date(row.cared_date).toLocaleDateString()}
               </Space>
             );
           },
@@ -61,12 +59,7 @@ export default () => (
         },
         content: {
           render: (_, row) => {
-            return (
-              <Space size={0}>
-                <Typography.Text>排班时间：</Typography.Text>
-                {transUnix(row.id)}
-              </Space>
-            );
+            return <Space size={25}>排班时间：{transUnix(row.id)}</Space>;
           },
           search: false,
         },

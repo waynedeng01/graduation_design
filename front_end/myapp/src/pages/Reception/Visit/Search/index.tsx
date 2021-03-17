@@ -34,7 +34,14 @@ export default () => (
           search: false,
         },
         description: {
-          dataIndex: 'purpose',
+          render: (_, row) => {
+            return (
+              <Space size={25}>
+                电话号码：<Tag color="#5BD8A6">{row.phone}</Tag>
+                来访目的：<Tag color="cyan">{row.purpose}</Tag>
+              </Space>
+            );
+          },
           search: false,
         },
         content: {
@@ -44,9 +51,8 @@ export default () => (
         subTitle: {
           render: (_, row) => {
             return (
-              <Space size={0}>
-                <Tag color="blue">{new Date(row.visit_date).toLocaleDateString()}</Tag>
-                <Tag color="#5BD8A6">{row.phone}</Tag>
+              <Space size={25}>
+                来访日期：<Tag color="blue">{new Date(row.visit_date).toLocaleDateString()}</Tag>
               </Space>
             );
           },
