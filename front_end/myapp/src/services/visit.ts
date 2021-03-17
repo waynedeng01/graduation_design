@@ -1,5 +1,5 @@
 // 来访信息相关API
-import { request } from 'umi';
+import request from 'umi-request';
 import Cookies from 'js-cookie';
 import { detailsObj } from '@/pages/Detail/Detail';
 

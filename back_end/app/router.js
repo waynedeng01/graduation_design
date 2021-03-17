@@ -10,4 +10,6 @@ module.exports = app => {
   app.router.resources('visit', '/capi/v2/visit', controller.visit);
   // 入住
   app.router.resources('live', '/capi/v2/live', controller.live);
+  // 避免冲突
+  app.router.get('/capi/v2/idCard', controller.live.getIdCard);
 };

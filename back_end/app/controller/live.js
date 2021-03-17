@@ -20,6 +20,11 @@ class LiveController extends Controller {
     };
   }
 
+  async getIdCard() {
+    const { ctx } = this;
+    ctx.body = await ctx.service.live.getIdCard();
+  }
+
   // 获取单个id
   async show() {
     const { ctx } = this;

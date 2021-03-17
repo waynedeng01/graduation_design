@@ -9,6 +9,14 @@ class LiveService extends Service {
     return { data: user };
   }
 
+  // 获取身份证号用于补全
+  async getIdCard() {
+    const list = await this.app.mysql.select('live_msg', {
+      columns: [ 'idCard' ], // 要查询的表字段
+    });
+    return list;
+  }
+
   // 获取床位相关信息
   async new() {
     // 假定15个房间

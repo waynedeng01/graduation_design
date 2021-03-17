@@ -69,6 +69,13 @@
     component: './Detail',
   },
   {
+    path: '/care_management',
+    name: '护理管理',
+    icon: 'HeartOutlined',
+    access: 'canAdmin',
+    component: './Care',
+  },
+  {
     component: './404',
   },
 ];

@@ -1,5 +1,5 @@
 // 老人详细信息
-import { Steps, Button, Card, Input, message } from 'antd';
+import { Steps, Button, Card, message, AutoComplete } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import request from 'umi-request';
 import React, { useState } from 'react';
@@ -33,6 +33,22 @@ export default () => {
   const [inputVal, setInputVal] = useState('');
   const [details, setDetails] = useState<detailsObj>(defaultObj);
   const [loading, setLoading] = useState<boolean>(false);
+  const [options, setOptions] = useState<{ value: string }[]>([]);
+  const onSearch = (searchText: string) => {
+    request<{ idCard: string }[]>('/capi/v2/idCard')
+      .then((res) => {
+        const arr = res.map(({ idCard }) => ({ value: idCard }));
+        const showArr = arr.filter((item) => item.value.indexOf(searchText) > -1);
+        setOptions(!searchText ? [] : showArr);
+      })
+      .catch((err) => {
+        setOptions([]);
+        message.error(err);
+      });
+  };
+  const onSelect = (data: string) => {
+    setInputVal(data);
+  };
 
   const next = () => {
     if (!inputVal) {
@@ -70,17 +86,21 @@ export default () => {
             <Step key={item.title} title={item.title} />
           ))}
         </Steps>
-        <div>
+        <div style={{ marginTop: '24px' }}>
           {current > 0 ? (
             <BillDetail waterId={inputVal} details={details} />
           ) : (
-            <Input
-              value={inputVal}
-              onChange={(e) => setInputVal(e.target.value)}
-              style={{ marginTop: '24px' }}
-              placeholder="请输入身份证号"
+            <AutoComplete
               allowClear
-            ></Input>
+              options={options}
+              onSearch={onSearch}
+              onSelect={onSelect}
+              value={inputVal}
+              onChange={(data) => setInputVal(data)}
+              style={{ width: '100%' }}
+              size="middle"
+              placeholder="请输入身份证号"
+            />
           )}
         </div>
         <div className={styles['steps-action']}>
