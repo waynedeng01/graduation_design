@@ -2,6 +2,7 @@
 import request from 'umi-request';
 import Cookies from 'js-cookie';
 import { detailsObj } from '@/pages/Detail/Detail';
+import { StaffDetail } from '@/pages/Hr';
 
 export type createRule = {
   name: string;
@@ -51,4 +52,30 @@ export async function getVisit(mobile: string) {
 
 export async function getVisitList() {
   return request('/capi/v2/visit');
+}
+
+// 录入员工信息
+export async function createStaffMessage(params: StaffDetail) {
+  return request<API.createVisitStateType>('/capi/v2/hr', {
+    method: 'POST',
+    data: params,
+    headers: { 'x-csrf-token': Cookies.get('csrfToken') },
+  });
+}
+
+// 更新人事表
+export async function updateStaffMessage(key: number, params: StaffDetail) {
+  return request<string>(`/capi/v2/hr/${key}`, {
+    method: 'PUT',
+    data: params,
+    headers: { 'x-csrf-token': Cookies.get('csrfToken') },
+  });
+}
+
+// 删除一行数据 -- 人事表
+export async function deleteStaffRecord(key: number) {
+  return request<string>(`/capi/v2/hr/${key}`, {
+    method: 'DELETE',
+    headers: { 'x-csrf-token': Cookies.get('csrfToken') },
+  });
 }

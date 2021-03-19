@@ -12,6 +12,8 @@ module.exports = app => {
   app.router.resources('live', '/capi/v2/live', controller.live);
   // 护理管理
   app.router.resources('care', '/capi/v2/care', controller.care);
+  // 人事管理
+  app.router.resources('hr', '/capi/v2/hr', controller.hr);
 
   // 单独隔离的出来的路由
   app.router.get('/capi/v2/idCard', controller.live.getIdCard);
