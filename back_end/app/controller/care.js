@@ -18,6 +18,18 @@ class CareController extends Controller {
     ctx.body = await ctx.service.care.list();
   }
 
+  async getStaff() {
+    const { ctx } = this;
+    ctx.body = await ctx.service.care.getStaff({
+      cared_date: ctx.params.cared_date,
+    });
+  }
+
+  async getdefaultStaffList() {
+    const { ctx } = this;
+    ctx.body = await ctx.service.care.getdefaultStaffList();
+  }
+
   async create() {
     const { ctx } = this;
     ctx.validate(this.createRule);

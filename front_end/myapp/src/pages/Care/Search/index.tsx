@@ -28,6 +28,7 @@ function chooseColor(index: number): string {
 }
 
 export default () => (
+  // todo 偶现不请求的情况 -- 可能是缓存导致
   <PageHeaderWrapper>
     <ProList<createCare & { id: string }>
       search={{

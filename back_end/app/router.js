@@ -18,4 +18,6 @@ module.exports = app => {
   // 单独隔离的出来的路由
   app.router.get('/capi/v2/idCard', controller.live.getIdCard);
   app.router.get('/capi/v2/caredUser', controller.live.getCaredUser);
+  app.router.get('/capi/v2/staff/:cared_date', controller.care.getStaff);
+  app.router.get('/capi/v2/staff', controller.care.getdefaultStaffList);
 };

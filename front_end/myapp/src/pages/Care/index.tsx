@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, message } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProForm, { ProFormDatePicker, ProFormSelect } from '@ant-design/pro-form';
@@ -27,13 +27,40 @@ const handleSubmit = async (values: createCare) => {
 
 export default () => {
   const [isSelectDate, setIsSelect] = useState<boolean>(false);
-  // todo 人事表完善后，需要将提交限制加上
+  const [date, setDate] = useState<string>('');
+  const [options, setoptions] = useState<
+    {
+      label: string;
+      value: string;
+    }[]
+  >([]);
+
+  useEffect(() => {
+    const fetchOptions = async () => {
+      const list = await request<{ data: string[] }>(`/capi/v2/staff/${date}`);
+      const options = list.data.map((id) => {
+        return {
+          label: id,
+          value: id,
+        };
+      });
+      console.log(options);
+      setoptions(options);
+    };
+    fetchOptions();
+  }, [date]);
+
   return (
     <PageHeaderWrapper>
       <Card>
         <ProForm
           onValuesChange={(values) => {
-            if (values.cared_date) setIsSelect(true);
+            const { cared_date } = values;
+            if (cared_date) {
+              const dateStr = new Date(moment(cared_date).valueOf()).toLocaleDateString();
+              setDate(dateStr.split('/').join('-'));
+              setIsSelect(true);
+            }
           }}
           onReset={() => setIsSelect(false)}
           onFinish={async (values) => {
@@ -76,14 +103,7 @@ export default () => {
               name="care_staff"
               label="护理人员"
               rules={[{ required: true, type: 'string' }]}
-              request={async () => {
-                return ['male', 'female'].map((value) => {
-                  return {
-                    label: value,
-                    value,
-                  };
-                });
-              }}
+              fieldProps={{ options }}
             />
             <ProFormSelect
               disabled={!isSelectDate}
