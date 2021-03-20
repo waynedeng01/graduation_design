@@ -54,10 +54,14 @@ const columns: ProColumns<StaffDetail>[] = [
         },
       ],
     },
+    sorter: (a, b) => Number(a.age) - Number(b.age),
   },
   {
     title: '性别',
     hideInSearch: true,
+    // 自动筛选
+    onFilter: true,
+    filters: true,
     formItemProps: {
       rules: [
         {
@@ -66,9 +70,17 @@ const columns: ProColumns<StaffDetail>[] = [
         },
       ],
     },
-    render: (_, record) => {
-      return <div>{maleMap[record.sex]}</div>;
+    valueType: 'select',
+    valueEnum: {
+      male: {
+        text: '男',
+      },
+      female: {
+        text: '女',
+      },
     },
+    // 会自动匹配 valueEnum中的内容
+    dataIndex: 'sex',
   },
   {
     title: '特长',
