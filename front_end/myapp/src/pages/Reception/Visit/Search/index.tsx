@@ -36,9 +36,9 @@ export default () => (
         description: {
           render: (_, row) => {
             return (
-              <Space size={25}>
-                电话号码：<Tag color="#5BD8A6">{row.phone}</Tag>
-                来访目的：<Tag color="cyan">{row.purpose}</Tag>
+              <Space size={5}>
+                电话号码：{row.phone}
+                来访目的：{row.purpose}
               </Space>
             );
           },
@@ -51,8 +51,8 @@ export default () => (
         subTitle: {
           render: (_, row) => {
             return (
-              <Space size={25}>
-                来访日期：<Tag color="blue">{new Date(row.visit_date).toLocaleDateString()}</Tag>
+              <Space size={0}>
+                <Tag color="blue">{new Date(row.visit_date).toLocaleDateString()}</Tag>
               </Space>
             );
           },

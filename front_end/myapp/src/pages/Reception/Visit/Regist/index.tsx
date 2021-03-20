@@ -1,5 +1,5 @@
-import React from 'react';
-import { Card, message } from 'antd';
+import React, { useRef } from 'react';
+import { Card, FormInstance, message } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProForm, { ProFormText, ProFormDatePicker, ProFormTextArea } from '@ant-design/pro-form';
 import { createRule, createVisit } from '@/services/visit';
@@ -19,12 +19,15 @@ const handleSubmit = async (values: createRule) => {
 };
 
 export default () => {
+  const ref = useRef<FormInstance>();
   return (
     <PageHeaderWrapper>
       <Card>
         <ProForm
+          formRef={ref}
           onFinish={async (values) => {
             handleSubmit(values as createRule);
+            ref.current?.resetFields();
           }}
         >
           <ProForm.Group>

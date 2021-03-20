@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Card, message } from 'antd';
+import React, { useState, useEffect, useRef } from 'react';
+import { Card, FormInstance, message } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProForm, { ProFormDatePicker, ProFormSelect } from '@ant-design/pro-form';
 import { createCare, createCareRecord } from '@/services/visit';
@@ -15,7 +15,6 @@ export const careMap = {
 const handleSubmit = async (values: createCare) => {
   try {
     const msg = await createCareRecord({ ...values });
-
     if (msg.insertId === 0) {
       message.success('护理排班成功！');
       return;
@@ -35,16 +34,19 @@ export default () => {
     }[]
   >([]);
 
+  const ref = useRef<FormInstance>();
+
   useEffect(() => {
     const fetchOptions = async () => {
-      const list = await request<{ data: string[] }>(`/capi/v2/staff/${date}`);
-      const options = list.data.map((id) => {
+      const list = await request<{ data: { name: string; id: string }[] }>(
+        `/capi/v2/staff/${date}`,
+      );
+      const options = list.data.map(({ name, id }) => {
         return {
-          label: id,
-          value: id,
+          label: `${name}（${id}）`,
+          value: `${name}_${id}`,
         };
       });
-      console.log(options);
       setoptions(options);
     };
     fetchOptions();
@@ -54,6 +56,7 @@ export default () => {
     <PageHeaderWrapper>
       <Card>
         <ProForm
+          formRef={ref}
           onValuesChange={(values) => {
             const { cared_date } = values;
             if (cared_date) {
@@ -65,6 +68,10 @@ export default () => {
           onReset={() => setIsSelect(false)}
           onFinish={async (values) => {
             handleSubmit(values as createCare);
+            ref.current?.resetFields();
+            setIsSelect(false);
+            setDate('');
+            setoptions([]);
           }}
         >
           <ProForm.Group>

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { message } from 'antd';
+import React, { useRef, useState } from 'react';
+import { FormInstance, message } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProForm, { ProFormText, ProFormSelect, ProFormDatePicker } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
@@ -34,13 +34,16 @@ const handleSubmit = async (values: detailsObj) => {
 export default () => {
   // 空房数据
   const [unliveNum, setUnliveNum] = useState(0);
+  const ref = useRef<FormInstance>();
   return (
     <PageHeaderWrapper>
       <ProCard gutter={16} ghost>
         <ProCard colSpan={18}>
           <ProForm
+            formRef={ref}
             onFinish={async (values) => {
               handleSubmit(values as detailsObj);
+              ref.current?.resetFields();
             }}
           >
             <ProForm.Group title="客户个人信息">
