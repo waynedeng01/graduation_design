@@ -24,4 +24,5 @@ module.exports = app => {
   // mock路由
   app.router.get('/capi/v2/mock/visit', controller.visit.mockCreate);
   app.router.get('/capi/v2/mock/hr', controller.hr.mockCreate);
+  app.router.get('/capi/v2/mock/live', controller.live.mockCreate);
 };

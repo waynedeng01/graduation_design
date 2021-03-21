@@ -1,5 +1,5 @@
 'use strict';
-
+const Mock = require('mockjs');
 const Service = require('egg').Service;
 
 class LiveService extends Service {
@@ -29,15 +29,15 @@ class LiveService extends Service {
   async new() {
     // 假定15个房间
     const rooMap = {
-      '01': false,
-      '02': false,
-      '03': false,
-      '04': false,
-      '05': false,
-      '06': false,
-      '07': false,
-      '08': false,
-      '09': false,
+      1: false,
+      2: false,
+      3: false,
+      4: false,
+      5: false,
+      6: false,
+      7: false,
+      8: false,
+      9: false,
       10: false,
       11: false,
       12: false,
@@ -70,6 +70,43 @@ class LiveService extends Service {
     const insertSuccess = result.affectedRows === 1;
 
     if (insertSuccess) return result.insertId;
+  }
+
+  mock() {
+    Mock.Random.extend({
+      phone() {
+        const phonePrefixs = [ '132', '135', '189' ];
+        return this.pick(phonePrefixs) + Mock.mock(/\d{8}/); // Number()
+      },
+      bed_id() {
+        const { number } = Mock.mock({ 'number|1-15': 100 });
+        return number;
+      },
+      age() {
+        const { number } = Mock.mock({ 'number|65-95': 100 });
+        return number;
+      },
+      address() {
+        return Mock.Random.county(true);
+      },
+      id_card() {
+        return Mock.Random.id();
+      },
+    });
+    const live_msg = Mock.mock({
+      'object|9': {
+        id: '@bed_id',
+        name: '@cname',
+        phone: '@phone',
+        age: '@age',
+        'sex|1': [ 'male', 'female' ],
+        'type|1': [ 'normal', 'advanced' ],
+        idCard: '@id_card',
+        address: '@address',
+        live_date: '@datetime("yyyy-MM-dd")',
+      },
+    });
+    return this.create(live_msg.object);
   }
 }
 

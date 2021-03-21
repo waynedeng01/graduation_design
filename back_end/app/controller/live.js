@@ -54,6 +54,15 @@ class LiveController extends Controller {
     };
     ctx.status = 201;
   }
+
+  async mockCreate() {
+    const { ctx } = this;
+    const id = await ctx.service.live.mock();
+    ctx.body = {
+      insertId: id,
+    };
+    ctx.status = 201;
+  }
 }
 
 module.exports = LiveController;
