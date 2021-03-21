@@ -40,6 +40,16 @@ class VisitController extends Controller {
     };
     ctx.status = 201;
   }
+
+  // mock 录入
+  async mockCreate() {
+    const { ctx } = this;
+    const id = await ctx.service.visit.mock();
+    ctx.body = {
+      insertId: id,
+    };
+    ctx.status = 201;
+  }
 }
 
 module.exports = VisitController;

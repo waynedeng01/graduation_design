@@ -20,4 +20,8 @@ module.exports = app => {
   app.router.get('/capi/v2/caredUser', controller.live.getCaredUser);
   app.router.get('/capi/v2/staff/:cared_date', controller.care.getStaff);
   app.router.get('/capi/v2/staff', controller.care.getdefaultStaffList);
+
+  // mock路由
+  app.router.get('/capi/v2/mock/visit', controller.visit.mockCreate);
+  app.router.get('/capi/v2/mock/hr', controller.hr.mockCreate);
 };

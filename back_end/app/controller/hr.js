@@ -54,6 +54,15 @@ class HrController extends Controller {
     };
     ctx.status = 201;
   }
+
+  async mockCreate() {
+    const { ctx } = this;
+    const id = await ctx.service.hr.mock();
+    ctx.body = {
+      insertId: id,
+    };
+    ctx.status = 201;
+  }
 }
 
 module.exports = HrController;

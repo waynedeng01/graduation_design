@@ -1,5 +1,5 @@
 'use strict';
-
+const Mock = require('mockjs');
 const Service = require('egg').Service;
 
 class HrService extends Service {
@@ -68,6 +68,32 @@ class HrService extends Service {
     const result = await this.app.mysql.insert('staff_msg', { id, name, age, sex, advantage, phone });
     const insertSuccess = result.affectedRows === 1;
     if (insertSuccess) return result.insertId;
+  }
+  mock() {
+    Mock.Random.extend({
+      phone() {
+        const phonePrefixs = [ '132', '135', '189' ]; // 自己写前缀哈
+        return this.pick(phonePrefixs) + Mock.mock(/\d{8}/); // Number()
+      },
+      id() {
+        return Date.now().toString().substr(0, 9); // Number()
+      },
+      age() {
+        const { number } = Mock.mock({ 'number|35-55': 100 });
+        return number;
+      },
+    });
+    const staff_msg = Mock.mock({
+      'object|6': {
+        id: '@id',
+        name: '@cname',
+        phone: '@phone',
+        age: '@age',
+        'sex|1': [ 'male', 'female' ],
+        advantage: '@cparagraph(1)',
+      },
+    });
+    return this.create(staff_msg.object);
   }
 }
 
