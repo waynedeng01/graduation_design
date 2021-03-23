@@ -1,6 +1,7 @@
 'use strict';
 const Mock = require('mockjs');
 const Service = require('egg').Service;
+const computed = require('../utils/index');
 
 class LiveService extends Service {
   // 获取单个id
@@ -64,9 +65,8 @@ class LiveService extends Service {
   }
 
   async create(params) {
-    const { name, phone, sex, age, idCard, address, id, live_date, type } = params;
-
-    const result = await this.app.mysql.insert('live_msg', { name, phone, sex, age, idCard, address, id, live_date, type });
+    const { avartar, name, phone, sex, age, idCard, address, id, live_date, type } = params;
+    const result = await this.app.mysql.insert('live_msg', { avartar: computed(avartar), name, phone, sex, age, idCard, address, id, live_date, type });
     const insertSuccess = result.affectedRows === 1;
 
     if (insertSuccess) return result.insertId;
@@ -94,7 +94,7 @@ class LiveService extends Service {
       },
     });
     const live_msg = Mock.mock({
-      'object|9': {
+      'object|10': {
         id: '@bed_id',
         name: '@cname',
         phone: '@phone',
@@ -104,6 +104,7 @@ class LiveService extends Service {
         idCard: '@id_card',
         address: '@address',
         live_date: '@datetime("yyyy-MM-dd")',
+        avartar: 'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
       },
     });
     return this.create(live_msg.object);

@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { FormInstance, message } from 'antd';
+import { FormInstance, message, Form, Upload } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProForm, { ProFormText, ProFormSelect, ProFormDatePicker } from '@ant-design/pro-form';
 import ProCard from '@ant-design/pro-card';
@@ -8,6 +8,8 @@ import request from 'umi-request';
 import { detailsObj } from '@/pages/Detail/Detail';
 import { createLive } from '@/services/visit';
 import moment from 'moment';
+import { beforeUpload, getBase64, TOKEN } from '@/utils';
+import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 
 export const maleMap = {
   male: '男',
@@ -31,10 +33,45 @@ const handleSubmit = async (values: detailsObj) => {
   }
 };
 
+// 要求必须是数组格式，该转换放在后台
+const normFile = (e: any) => {
+  console.log('Upload event:', e);
+  if (Array.isArray(e)) {
+    return e;
+  }
+  return e && e.fileList;
+};
+
 export default () => {
   // 空房数据
   const [unliveNum, setUnliveNum] = useState(0);
   const ref = useRef<FormInstance>();
+  const [loading, setLoading] = useState(false);
+  const [imgUrl, setUrl] = useState('');
+  const uploadButton = (
+    <div>
+      {loading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>Upload</div>
+    </div>
+  );
+
+  const restProps = {
+    beforeUpload,
+    onChange: (info: any) => {
+      if (info.file.status === 'uploading') {
+        setLoading(true);
+        return;
+      }
+      if (info.file.status === 'done') {
+        // console.log(info);
+        // ref.current?.setFieldsValue({ avartar: info?.fileList[0]?.response?.data?.url });
+        getBase64(info.file.originFileObj, (imageUrl: string) => {
+          setUrl(imageUrl);
+          setLoading(false);
+        });
+      }
+    },
+  };
   return (
     <PageHeaderWrapper>
       <ProCard gutter={16} ghost>
@@ -44,8 +81,35 @@ export default () => {
             onFinish={async (values) => {
               handleSubmit(values as detailsObj);
               ref.current?.resetFields();
+              setUrl('');
             }}
           >
+            <ProForm.Group title="头像录入">
+              <Form.Item
+                label="头像"
+                name="avartar"
+                valuePropName="fileList"
+                getValueFromEvent={normFile}
+                rules={[{ required: true }]}
+              >
+                <Upload
+                  name="image"
+                  showUploadList={false}
+                  listType="picture-card"
+                  className="avatar-uploader"
+                  action="https://img.coolcr.cn/api/upload"
+                  headers={{ token: TOKEN }}
+                  {...restProps}
+                >
+                  {imgUrl ? (
+                    <img src={imgUrl} alt="avatar" style={{ width: '100%' }} />
+                  ) : (
+                    uploadButton
+                  )}
+                </Upload>
+              </Form.Item>
+            </ProForm.Group>
+
             <ProForm.Group title="客户个人信息">
               <ProFormText
                 width="sm"

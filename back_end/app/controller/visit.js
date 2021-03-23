@@ -7,6 +7,7 @@ class VisitController extends Controller {
     super(ctx);
 
     this.createRule = {
+      avartar: 'array',
       name: 'string',
       phone: 'string',
       purpose: 'string',

@@ -17,6 +17,7 @@ class LiveController extends Controller {
       id: 'string',
       live_date: 'date',
       type: 'string',
+      avartar: 'array', // fileList
     };
   }
 

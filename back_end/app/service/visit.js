@@ -1,6 +1,7 @@
 'use strict';
 const Mock = require('mockjs');
 const Service = require('egg').Service;
+const computed = require('../utils/index');
 
 class VisitService extends Service {
   // 获取单个id
@@ -16,11 +17,8 @@ class VisitService extends Service {
   }
 
   async create(params) {
-    const { name, phone, purpose, visit_date, require_description } = params;
-
-    const avartar = 'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg';
-
-    const result = await this.app.mysql.insert('visit_msg', { name, phone, purpose, visit_date, require_description, avartar });
+    const { avartar, name, phone, purpose, visit_date, require_description } = params;
+    const result = await this.app.mysql.insert('visit_msg', { name, phone, purpose, visit_date, require_description, avartar: computed(avartar) });
     const insertSuccess = result.affectedRows === 1;
 
     if (insertSuccess) return result.insertId;
@@ -34,12 +32,13 @@ class VisitService extends Service {
       },
     });
     const visit_msg = Mock.mock({
-      'object|5': { // 模拟生成一个数组，数组长度为5，内容为5个对象，对象的具               体内容如下
+      'object|6': {
         name: '@cname', // 生成中文姓名
         phone: '@phone',
         purpose: '@cparagraph(1)', // 生成一段中文段落
         visit_date: '@datetime("yyyy-MM-dd")', // 生成时间
         require_description: '@cparagraph',
+        avartar: 'https://gw.alipayobjects.com/zos/antfincdn/efFD%24IOql2/weixintupian_20170331104822.jpg',
       },
     });
     return this.create(visit_msg.object);
