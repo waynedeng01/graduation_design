@@ -7,8 +7,6 @@ class CareService extends Service {
 
   async list() {
     const results = await this.app.mysql.select('care_record');
-
-    // todo 做代码优化
     for (const item of results) {
       const user = await this.app.mysql.get('live_msg', { idCard: item.cared_user });
       if (user) { item.cared_user = user.name; }

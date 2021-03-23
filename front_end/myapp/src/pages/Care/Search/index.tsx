@@ -28,9 +28,6 @@ function chooseColor(index: number): string {
 }
 
 export default () => (
-  // todo 偶现不请求的情况 -- 可能是缓存导致
-  // todo 录入用户照片
-  // todo 数据大规模 mock入数据库
   <PageHeaderWrapper>
     <ProList<createCare & { id: string }>
       search={{
