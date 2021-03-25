@@ -52,6 +52,12 @@
         icon: 'smile',
         component: './Reception/Visit/Search',
       },
+      {
+        path: '/reception/sub-page4',
+        name: '出院登记',
+        icon: 'smile',
+        component: './Reception/Leave',
+      },
     ],
   },
   {
@@ -59,7 +65,20 @@
     name: '收费管理',
     icon: 'TransactionOutlined',
     access: 'canAdmin',
-    component: './Bill',
+    routes: [
+      {
+        path: '/bill/sub-page1',
+        name: '老人缴费',
+        icon: 'smile',
+        component: './Bill',
+      },
+      {
+        path: '/bill/sub-page2',
+        name: '公司收支明细',
+        icon: 'smile',
+        component: './Reception/Visit/Search',
+      },
+    ],
   },
   {
     path: '/person_msg',

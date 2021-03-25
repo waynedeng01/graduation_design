@@ -56,6 +56,13 @@ class LiveController extends Controller {
     ctx.status = 201;
   }
 
+  // 删除
+  async destroy() {
+    const { ctx } = this;
+    ctx.body = await ctx.service.live.destroy({ id: ctx.params.id });
+    ctx.status = 204;
+  }
+
   async mockCreate() {
     const { ctx } = this;
     const id = await ctx.service.live.mock();

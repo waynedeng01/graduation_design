@@ -17,6 +17,7 @@ const steps = [
 ];
 
 const defaultObj: detailsObj = {
+  avartar: '',
   name: '',
   phone: '',
   age: '',

@@ -72,6 +72,14 @@ class LiveService extends Service {
     if (insertSuccess) return result.insertId;
   }
 
+  async destroy(params) {
+    const result = await this.app.mysql.delete('live_msg', {
+      idCard: params.id,
+    });
+    const deleteSuccess = result.affectedRows === 1;
+    if (deleteSuccess) return result.insertId;
+  }
+
   mock() {
     Mock.Random.extend({
       phone() {

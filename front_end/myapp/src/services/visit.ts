@@ -36,6 +36,14 @@ export async function createLive(params: detailsObj) {
   });
 }
 
+// 出院办理
+export async function deleteLive(key: number) {
+  return request<string>(`/capi/v2/live/${key}`, {
+    method: 'DELETE',
+    headers: { 'x-csrf-token': Cookies.get('csrfToken') },
+  });
+}
+
 // 新增护理记录
 export async function createCareRecord(params: createCare) {
   return request<API.createVisitStateType>('/capi/v2/care', {
