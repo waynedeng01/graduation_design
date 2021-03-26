@@ -30,7 +30,10 @@ class BillService extends Service {
     const { payed_date, type, live_date } = user;
     const str = `
     SELECT cared_project, cared_date, care_staff, id FROM care_record
-    WHERE cared_user = ${params.id} AND (TO_DAYS(cared_date) > TO_DAYS('${(payed_date ? payed_date : live_date).toISOString()}'))
+    WHERE cared_user = ${params.id}
+    AND (cared_date
+    BETWEEN ('${(payed_date ? payed_date : live_date).toISOString()}')
+    AND '${new Date().toISOString()}')
     ORDER BY cared_date DESC
     `;
 
@@ -50,6 +53,15 @@ class BillService extends Service {
     // 住宿费用
     const accoCosts = getAccPrice(transUnix(payed_date ? payed_date : live_date, Date.now()), type);
     return { data: { payed_date, accoCosts: accoCosts < 0 ? 0 : accoCosts, projectCosts, record: recordList } };
+  }
+
+  // 创建消费记录
+  async create(params) {
+    const { costs, costs_date, inout_type, costs_type } = params;
+    const id = Date.now().toString();
+    const result = await this.app.mysql.insert('inout_msg', { id, costs, costs_date, inout_type, costs_type });
+    const insertSuccess = result.affectedRows === 1;
+    if (insertSuccess) return result.insertId;
   }
 }
 

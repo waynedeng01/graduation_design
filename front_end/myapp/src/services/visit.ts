@@ -19,6 +19,13 @@ export type createCare = {
   care_staff: string;
 };
 
+export type createCosts = {
+  costs: number;
+  costs_date: string;
+  inout_type: string;
+  costs_type: string;
+};
+
 export async function createVisit(params: createRule) {
   return request<API.createVisitStateType>('/capi/v2/visit', {
     method: 'POST',
@@ -53,6 +60,23 @@ export async function createCareRecord(params: createCare) {
   });
 }
 
+// 新增消费记录
+export async function createCostsRecord(params: createCosts) {
+  return request<API.createVisitStateType>('/capi/v2/bill', {
+    method: 'POST',
+    data: params,
+    headers: { 'x-csrf-token': Cookies.get('csrfToken') },
+  });
+}
+
+// 更新消费时间
+export async function updatePayedDate(key: number, params: { idCard: string; payed_date: string }) {
+  return request<string>(`/capi/v2/live/${key}`, {
+    method: 'PUT',
+    data: params,
+    headers: { 'x-csrf-token': Cookies.get('csrfToken') },
+  });
+}
 // 获取单个
 export async function getVisit(mobile: string) {
   return request(`/capi/v2/visit/${mobile}`);

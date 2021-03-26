@@ -5,7 +5,6 @@ const Controller = require('egg').Controller;
 class LiveController extends Controller {
   constructor(ctx) {
     super(ctx);
-
     this.createRule = {
       name: 'string',
       phone: 'string',
@@ -18,6 +17,10 @@ class LiveController extends Controller {
       live_date: 'date',
       type: 'string',
       avartar: 'array', // fileList
+    };
+    this.updateRule = {
+      idCard: 'string',
+      payed_date: 'date',
     };
   }
 
@@ -54,6 +57,16 @@ class LiveController extends Controller {
       insertId: id,
     };
     ctx.status = 201;
+  }
+
+  // 更新 payed_date
+  async update() {
+    const { ctx } = this;
+    ctx.validate(this.updateRule);
+    const id = await ctx.service.live.update(ctx.request.body);
+    if (id === 0) {
+      ctx.status = 204;
+    }
   }
 
   // 删除

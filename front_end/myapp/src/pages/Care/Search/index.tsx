@@ -5,6 +5,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import request from 'umi-request';
 import { createCare } from '@/services/visit';
 import { careMap } from '../index';
+import { BackTop } from 'antd';
 
 function transUnix(timeStamp: string): string {
   const date = new Date(Number(timeStamp));
@@ -29,6 +30,7 @@ function chooseColor(index: number): string {
 
 export default () => (
   <PageHeaderWrapper>
+    <BackTop />
     <ProList<createCare & { id: string }>
       search={{
         filterType: 'light',

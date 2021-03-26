@@ -7,6 +7,7 @@ import React, { useState } from 'react';
 import { BillDetail, detailsObj } from './Detail';
 import styles from './style.less';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
+import { createCosts, createCostsRecord, updatePayedDate } from '@/services/visit';
 const { Step } = Steps;
 const { confirm } = Modal;
 
@@ -26,18 +27,13 @@ const defaultObj: detailsObj = {
   record: [],
 };
 
-function showConfirm() {
-  confirm({
-    title: '确认支付?',
-    icon: <ExclamationCircleOutlined />,
-    onOk() {
-      return new Promise((resolve, reject) => {
-        setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-      }).catch(() => console.log('Oops errors!'));
-    },
-    onCancel() {},
-  });
-}
+const date = new Date();
+const now =
+  date.getFullYear() +
+  '-' +
+  (date.getMonth() + 1).toString().padStart(2, '0') +
+  '-' +
+  date.getDate().toString().padStart(2, '0');
 
 export default () => {
   const [current, setCurrent] = useState(0);
@@ -45,6 +41,41 @@ export default () => {
   const [details, setDetails] = useState<detailsObj>(defaultObj);
   const [loading, setLoading] = useState<boolean>(false);
   const [options, setOptions] = useState<{ value: string }[]>([]);
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  function showConfirm(idCard: string, details: detailsObj) {
+    const { accoCosts, projectCosts } = details;
+    const values: createCosts = {
+      costs: accoCosts + projectCosts,
+      costs_date: now,
+      costs_type: 'leave',
+      inout_type: 'in',
+    };
+    confirm({
+      title: '确认支付?',
+      icon: <ExclamationCircleOutlined />,
+      async onOk() {
+        try {
+          const msg = await createCostsRecord({ ...values });
+          const updateMsg = await updatePayedDate(Number(idCard), {
+            idCard,
+            payed_date: now,
+          });
+          if (msg.insertId === 0 && !updateMsg) {
+            message.success('支付成功！');
+            setIsDisabled(true);
+            setInputVal('');
+            setTimeout(() => {
+              setCurrent(0);
+            }, 1000);
+          }
+        } catch (error) {
+          message.error('支付失败，请重试！');
+        }
+      },
+      onCancel() {},
+    });
+  }
+
   const onSearch = (searchText: string) => {
     request<{ idCard: string }[]>('/capi/v2/idCard')
       .then((res) => {
@@ -67,6 +98,7 @@ export default () => {
       return;
     }
     setLoading(true);
+    setIsDisabled(false);
     request(`/capi/v2/bill/${inputVal}`)
       .then((res) => {
         const { data } = res;
@@ -74,6 +106,7 @@ export default () => {
         else {
           setCurrent(current + 1);
           setDetails(data);
+          if (data.accoCosts + data.projectCosts <= 0) setIsDisabled(true);
         }
         setLoading(false);
       })
@@ -124,7 +157,12 @@ export default () => {
               <Button style={{ margin: '0 8px' }} onClick={() => prev()}>
                 返回
               </Button>
-              <Button type="primary" style={{ margin: '0 8px' }} onClick={() => showConfirm()}>
+              <Button
+                type="primary"
+                disabled={isDisabled}
+                style={{ margin: '0 8px' }}
+                onClick={() => showConfirm(inputVal, details)}
+              >
                 结账
               </Button>
             </>

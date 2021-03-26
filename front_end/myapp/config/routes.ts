@@ -76,7 +76,7 @@
         path: '/bill/sub-page2',
         name: '公司收支明细',
         icon: 'smile',
-        component: './Reception/Visit/Search',
+        component: './Bill/Statistics',
       },
     ],
   },

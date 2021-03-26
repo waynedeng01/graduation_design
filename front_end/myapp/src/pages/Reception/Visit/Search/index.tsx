@@ -4,9 +4,11 @@ import ProList from '@ant-design/pro-list';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import request from 'umi-request';
 import { createRule } from '@/services/visit';
+import { BackTop } from 'antd';
 
 export default () => (
   <PageHeaderWrapper>
+    <BackTop />
     <ProList<createRule>
       search={{
         filterType: 'light',

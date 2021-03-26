@@ -72,6 +72,21 @@ class LiveService extends Service {
     if (insertSuccess) return result.insertId;
   }
 
+  async update(params) {
+    const { idCard, payed_date } = params;
+    const options = {
+      where: {
+        idCard,
+      },
+    };
+    const row = {
+      payed_date,
+    };
+    const result = await this.app.mysql.update('live_msg', row, options);
+    const updateSuccess = result.affectedRows === 1;
+    if (updateSuccess) return result.insertId;
+  }
+
   async destroy(params) {
     const result = await this.app.mysql.delete('live_msg', {
       idCard: params.id,
