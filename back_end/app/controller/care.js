@@ -10,6 +10,10 @@ class CareController extends Controller {
       cared_date: 'date',
       cared_project: 'array',
       care_staff: 'string',
+      costs: 'number',
+      costs_date: 'date',
+      inout_type: 'string',
+      costs_type: 'string',
     };
   }
 

@@ -37,6 +37,8 @@ export const TOKEN = '4230ff8d73ba06f02b6bda9a0e7f63d7';
 export const STOCK_PRICE = 30;
 // 库存允许的最大值
 export const STOCK_MAX = 100;
+// 员工工资
+export const SALARY = 30;
 
 // --types
 

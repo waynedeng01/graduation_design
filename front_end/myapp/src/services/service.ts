@@ -1,8 +1,7 @@
 // 来访信息相关API
 import request from 'umi-request';
 import Cookies from 'js-cookie';
-import { StaffDetail } from '@/pages/Hr';
-import { createCare, createCosts, createRule, liveRecord, stockItem } from '@/const';
+import { createCare, createCosts, createRule, liveRecord, StaffDetail, stockItem } from '@/const';
 
 export async function createVisit(params: createRule) {
   return request<API.createVisitStateType>('/capi/v2/visit', {
@@ -30,10 +29,10 @@ export async function deleteLive(key: number) {
 }
 
 // 新增护理记录
-export async function createCareRecord(params: createCare) {
+export async function createCareRecord(costs: createCosts, params: createCare) {
   return request<API.createVisitStateType>('/capi/v2/care', {
     method: 'POST',
-    data: params,
+    data: { ...costs, ...params },
     headers: { 'x-csrf-token': Cookies.get('csrfToken') },
   });
 }

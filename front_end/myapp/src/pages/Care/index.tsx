@@ -5,11 +5,17 @@ import ProForm, { ProFormDatePicker, ProFormSelect } from '@ant-design/pro-form'
 import { createCareRecord, getStock } from '@/services/service';
 import moment from 'moment';
 import request from 'umi-request';
-import { careMap, createCare } from '@/const';
+import { careMap, createCare, createCosts, now, SALARY } from '@/const';
 
 const handleSubmit = async (values: createCare) => {
   try {
-    const msg = await createCareRecord({ ...values });
+    const costs: createCosts = {
+      costs: SALARY,
+      costs_date: now,
+      inout_type: 'out',
+      costs_type: 'salary',
+    };
+    const msg = await createCareRecord(costs, values);
     if (msg.insertId === 0) {
       message.success('护理排班成功！');
       return;

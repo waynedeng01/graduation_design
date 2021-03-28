@@ -1,9 +1,24 @@
 'use strict';
 
 const Service = require('egg').Service;
-// const _ = require('lodash');
 
 class CareService extends Service {
+  async createCareRecord(params) {
+    const { cared_user, cared_date, cared_project, care_staff } = params;
+    // 直接作为排班的时间
+    const id = Date.now().toString();
+    const result = await this.app.mysql.insert('care_record', { id, cared_user, cared_date, cared_project: cared_project.join(), care_staff });
+    const insertSuccess = result.affectedRows === 1;
+    if (insertSuccess) return result.insertId;
+  }
+
+  async createInOut(params) {
+    const { costs, costs_date, inout_type, costs_type } = params;
+    const id = Date.now().toString();
+    const result = await this.app.mysql.insert('inout_msg', { id, costs, costs_date, inout_type, costs_type });
+    const insertSuccess = result.affectedRows === 1;
+    if (insertSuccess) return result.insertId;
+  }
 
   async list() {
     const results = await this.app.mysql.select('care_record');
@@ -37,13 +52,11 @@ class CareService extends Service {
   }
 
   async create(params) {
-    const { cared_user, cared_date, cared_project, care_staff } = params;
-    // 直接作为排班的时间
-    const id = Date.now().toString();
-    const result = await this.app.mysql.insert('care_record', { id, cared_user, cared_date, cared_project: cared_project.join(), care_staff });
-    const insertSuccess = result.affectedRows === 1;
-
-    if (insertSuccess) return result.insertId;
+    const res = await this.app.mysql.beginTransactionScope(async () => {
+      this.createInOut(params);
+      this.createCareRecord(params);
+    }, this.ctx);
+    if (!res) return 0;
   }
 }
 

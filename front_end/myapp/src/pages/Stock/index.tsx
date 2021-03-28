@@ -2,11 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Liquid } from '@ant-design/charts';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProCard, { StatisticCard } from '@ant-design/pro-card';
-import StockPie, { StockPieProps } from '@/components/PieCharts/StockPie';
+import StockPie from '@/components/PieCharts/StockPie';
 import { Button, message } from 'antd';
 import { ModalForm, ProFormDigit } from '@ant-design/pro-form';
 import { getStock, updateStockMsg } from '@/services/service';
-import { createCosts, now, stockItem, STOCK_MAX, STOCK_PRICE } from '@/const';
+import { createCosts, now, stockItem, StockPieProps, STOCK_MAX, STOCK_PRICE } from '@/const';
 import { LiquidConfig } from '@/components/LiquidCharts/config';
 
 const DemoLiquid: React.FC = () => {
