@@ -3,20 +3,12 @@ import { Steps, Button, Card, message, AutoComplete } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import request from 'umi-request';
 import React, { useState } from 'react';
-import { BillDetail, detailsObj } from './Detail';
+import { BillDetail } from './Detail';
 import styles from './style.less';
+import { liveRecord, steps } from '@/const';
 const { Step } = Steps;
 
-const steps = [
-  {
-    title: '查询',
-  },
-  {
-    title: '明细',
-  },
-];
-
-const defaultObj: detailsObj = {
+const defaultObj: liveRecord = {
   avartar: '',
   name: '',
   phone: '',
@@ -32,7 +24,7 @@ const defaultObj: detailsObj = {
 export default () => {
   const [current, setCurrent] = useState(0);
   const [inputVal, setInputVal] = useState('');
-  const [details, setDetails] = useState<detailsObj>(defaultObj);
+  const [details, setDetails] = useState<liveRecord>(defaultObj);
   const [loading, setLoading] = useState<boolean>(false);
   const [options, setOptions] = useState<{ value: string }[]>([]);
   const onSearch = (searchText: string) => {

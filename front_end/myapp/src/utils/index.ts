@@ -1,7 +1,5 @@
 import { message } from 'antd';
 
-export const TOKEN = '4230ff8d73ba06f02b6bda9a0e7f63d7';
-
 // 存放公共方法
 export function getBase64(img: any, callback: any) {
   const reader = new FileReader();

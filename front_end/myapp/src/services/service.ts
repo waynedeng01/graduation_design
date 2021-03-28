@@ -1,35 +1,8 @@
 // 来访信息相关API
 import request from 'umi-request';
 import Cookies from 'js-cookie';
-import { detailsObj } from '@/pages/Detail/Detail';
 import { StaffDetail } from '@/pages/Hr';
-
-export type createRule = {
-  name: string;
-  phone: string;
-  purpose: string;
-  visit_date: Date;
-  require_description: string;
-};
-
-export type createCare = {
-  cared_user: string;
-  cared_date: Date;
-  cared_project: ('doctor' | 'fruit' | 'gift')[];
-  care_staff: string;
-};
-
-export type createCosts = {
-  costs: number;
-  costs_date: string;
-  inout_type: string;
-  costs_type: string;
-};
-
-export type stockItem = {
-  name: 'doctor' | 'fruit' | 'gift';
-  number: number;
-};
+import { createCare, createCosts, createRule, liveRecord, stockItem } from '@/const';
 
 export async function createVisit(params: createRule) {
   return request<API.createVisitStateType>('/capi/v2/visit', {
@@ -40,7 +13,7 @@ export async function createVisit(params: createRule) {
 }
 
 // 创建入住
-export async function createLive(params: detailsObj) {
+export async function createLive(params: liveRecord) {
   return request<API.createVisitStateType>('/capi/v2/live', {
     method: 'POST',
     data: params,

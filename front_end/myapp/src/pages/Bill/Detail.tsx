@@ -2,28 +2,8 @@ import React from 'react';
 import { WaterMark } from '@ant-design/pro-layout';
 import { Timeline } from 'antd';
 import ProCard from '@ant-design/pro-card';
-import { careMap } from '../Care';
+import { careMap, DetailProps } from '@/const';
 import { Statistic, Row, Col } from 'antd';
-
-type care_record = {
-  cared_project: string;
-  cared_date: string;
-  care_staff: string;
-  id: string; // 护理记录id
-  costs: number; // 单条记录金额
-};
-
-export interface detailsObj {
-  payed_date: string;
-  accoCosts: number;
-  projectCosts: number;
-  record: care_record[];
-}
-
-interface DetailProps {
-  waterId: string;
-  details: detailsObj;
-}
 
 export const BillDetail: React.FC<DetailProps> = (props) => {
   const { waterId, details } = props;

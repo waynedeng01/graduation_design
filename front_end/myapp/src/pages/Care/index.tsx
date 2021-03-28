@@ -2,15 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, FormInstance, message } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProForm, { ProFormDatePicker, ProFormSelect } from '@ant-design/pro-form';
-import { createCare, createCareRecord } from '@/services/visit';
+import { createCareRecord, getStock } from '@/services/service';
 import moment from 'moment';
 import request from 'umi-request';
-
-export const careMap = {
-  doctor: '医疗',
-  fruit: '精品水果',
-  gift: '礼物',
-};
+import { careMap, createCare } from '@/const';
 
 const handleSubmit = async (values: createCare) => {
   try {
@@ -96,12 +91,15 @@ export default () => {
               }}
               rules={[{ required: true, type: 'array' }]}
               request={async () => {
-                return ['doctor', 'fruit', 'gift'].map((value) => {
-                  return {
-                    label: careMap[value],
-                    value,
-                  };
-                });
+                const list = await getStock();
+                return list
+                  .filter((item) => item.number > 0)
+                  .map(({ name, number }) => {
+                    return {
+                      label: `${careMap[name]}`,
+                      value: name,
+                    };
+                  });
               }}
             />
             <ProFormSelect

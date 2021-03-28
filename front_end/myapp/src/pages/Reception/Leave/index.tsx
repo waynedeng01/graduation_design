@@ -4,7 +4,7 @@ import request from 'umi-request';
 import React, { useState } from 'react';
 import styles from './style.less';
 import { history } from 'umi';
-import { deleteLive } from '@/services/visit';
+import { deleteLive } from '@/services/service';
 
 const _deleteLive = async (key: number) => {
   try {

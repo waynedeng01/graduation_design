@@ -3,8 +3,8 @@ import { Tag, Space } from 'antd';
 import ProList from '@ant-design/pro-list';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import request from 'umi-request';
-import { createRule } from '@/services/visit';
 import { BackTop } from 'antd';
+import { createRule } from '@/const';
 
 export default () => (
   <PageHeaderWrapper>

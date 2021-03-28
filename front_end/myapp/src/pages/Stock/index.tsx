@@ -5,17 +5,9 @@ import ProCard, { StatisticCard } from '@ant-design/pro-card';
 import StockPie, { StockPieProps } from '@/components/PieCharts/StockPie';
 import { Button, message } from 'antd';
 import { ModalForm, ProFormDigit } from '@ant-design/pro-form';
-import { createCosts, getStock, stockItem, updateStockMsg } from '@/services/visit';
-import { now } from '../Bill';
+import { getStock, updateStockMsg } from '@/services/service';
+import { createCosts, now, stockItem, STOCK_MAX, STOCK_PRICE } from '@/const';
 import { LiquidConfig } from '@/components/LiquidCharts/config';
-
-export type StockRecord = {
-  name: string;
-  number: number;
-};
-
-const STOCK_PRICE = 30;
-const STOCK_MAX = 100;
 
 const DemoLiquid: React.FC = () => {
   const [options, setOptions] = useState<stockItem[]>([]);

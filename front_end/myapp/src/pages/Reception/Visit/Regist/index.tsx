@@ -2,10 +2,11 @@ import React, { useRef, useState } from 'react';
 import { Card, FormInstance, message, Form, Upload } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import ProForm, { ProFormText, ProFormDatePicker, ProFormTextArea } from '@ant-design/pro-form';
-import { createRule, createVisit } from '@/services/visit';
+import { createVisit } from '@/services/service';
 import moment from 'moment';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { beforeUpload, getBase64, TOKEN } from '@/utils';
+import { beforeUpload, getBase64 } from '@/utils';
+import { createRule, TOKEN } from '@/const';
 
 const handleSubmit = async (values: createRule) => {
   try {

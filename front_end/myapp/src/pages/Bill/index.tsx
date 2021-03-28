@@ -4,21 +4,13 @@ import { Modal, Steps, Button, Card, message, AutoComplete } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import request from 'umi-request';
 import React, { useState } from 'react';
-import { BillDetail, detailsObj } from './Detail';
+import { BillDetail } from './Detail';
 import styles from './style.less';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
-import { createCosts, createCostsRecord, updatePayedDate } from '@/services/visit';
+import { createCostsRecord, updatePayedDate } from '@/services/service';
+import { createCosts, detailsObj, now, steps } from '@/const';
 const { Step } = Steps;
 const { confirm } = Modal;
-
-const steps = [
-  {
-    title: '查询',
-  },
-  {
-    title: '明细',
-  },
-];
 
 const defaultObj: detailsObj = {
   accoCosts: 0,
@@ -26,14 +18,6 @@ const defaultObj: detailsObj = {
   payed_date: '',
   record: [],
 };
-
-const date = new Date();
-export const now =
-  date.getFullYear() +
-  '-' +
-  (date.getMonth() + 1).toString().padStart(2, '0') +
-  '-' +
-  date.getDate().toString().padStart(2, '0');
 
 export default () => {
   const [current, setCurrent] = useState(0);

@@ -5,23 +5,13 @@ import ProForm, { ProFormText, ProFormSelect, ProFormDatePicker } from '@ant-des
 import ProCard from '@ant-design/pro-card';
 import BedPie from '../../../../components/PieCharts/BedPie';
 import request from 'umi-request';
-import { detailsObj } from '@/pages/Detail/Detail';
-import { createLive } from '@/services/visit';
+import { createLive } from '@/services/service';
 import moment from 'moment';
-import { beforeUpload, getBase64, TOKEN } from '@/utils';
+import { beforeUpload, getBase64 } from '@/utils';
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { liveRecord, maleMap, TOKEN } from '@/const';
 
-export const maleMap = {
-  male: '男',
-  female: '女',
-};
-
-export const typeMap = {
-  advanced: '高级',
-  normal: '普通',
-};
-
-const handleSubmit = async (values: detailsObj) => {
+const handleSubmit = async (values: liveRecord) => {
   try {
     const msg = await createLive({ ...values });
     if (msg.insertId === 0) {
@@ -79,7 +69,7 @@ export default () => {
           <ProForm
             formRef={ref}
             onFinish={async (values) => {
-              handleSubmit(values as detailsObj);
+              handleSubmit(values as liveRecord);
               ref.current?.resetFields();
               setUrl('');
             }}
@@ -196,7 +186,7 @@ export default () => {
                 request={async () => {
                   return ['normal', 'advanced'].map((value) => {
                     return {
-                      label: typeMap[value],
+                      label: maleMap[value],
                       value,
                     };
                   });

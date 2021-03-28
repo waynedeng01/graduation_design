@@ -22,10 +22,6 @@ function beforeUpload(file: any) {
   return isJpgOrPng && isLt2M;
 }
 
-// type IProps = {
-//   getimageUrl: (url: string) => string;
-// };
-
 export const UploadAvatar = () => {
   const [loading, setLoading] = useState(false);
   const [imgUrl, setUrl] = useState('');

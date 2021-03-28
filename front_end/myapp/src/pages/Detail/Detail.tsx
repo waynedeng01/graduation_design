@@ -1,27 +1,12 @@
 import React from 'react';
 import { WaterMark } from '@ant-design/pro-layout';
 import { Descriptions } from 'antd';
-import { maleMap, typeMap } from '@/pages/Reception/Visit/Live';
+import { liveRecord, maleMap, typeMap } from '@/const';
 import { Avatar } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-
-export interface detailsObj {
-  name: string;
-  phone: string;
-  sex: 'male' | 'female';
-  age: string;
-  idCard: string;
-  address: string;
-  // 床位号
-  id: string;
-  live_date: string;
-  type: 'normal' | 'advanced';
-  avartar: string;
-}
-
 interface DetailProps {
   waterId: string;
-  details: detailsObj;
+  details: liveRecord;
 }
 
 export const BillDetail: React.FC<DetailProps> = (props) => {

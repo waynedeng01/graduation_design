@@ -2,12 +2,7 @@
 import React from 'react';
 import { Pie } from '@ant-design/charts';
 import { PieChartsConfig } from './config';
-
-export type StockPieProps = {
-  giftNum: number;
-  fruitNum: number;
-  doctorNum: number;
-};
+import { StockPieProps } from '@/const';
 
 const StockPie: React.FC<StockPieProps> = (props) => {
   const { giftNum, fruitNum, doctorNum } = props;

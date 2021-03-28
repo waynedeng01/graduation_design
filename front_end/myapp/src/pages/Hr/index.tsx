@@ -6,17 +6,8 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import request from 'umi-request';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import { maleMap } from '../Reception/Visit/Live';
-import { createStaffMessage, deleteStaffRecord, updateStaffMessage } from '@/services/visit';
-
-export type StaffDetail = {
-  id: string;
-  name: string;
-  age: string;
-  sex: string;
-  advantage: string;
-  phone: string;
-};
+import { maleMap, StaffDetail } from '@/const';
+import { createStaffMessage, deleteStaffRecord, updateStaffMessage } from '@/services/service';
 
 const columns: ProColumns<StaffDetail>[] = [
   {
