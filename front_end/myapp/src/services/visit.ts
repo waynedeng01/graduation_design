@@ -26,6 +26,11 @@ export type createCosts = {
   costs_type: string;
 };
 
+export type stockItem = {
+  name: 'doctor' | 'fruit' | 'gift';
+  number: number;
+};
+
 export async function createVisit(params: createRule) {
   return request<API.createVisitStateType>('/capi/v2/visit', {
     method: 'POST',
@@ -110,4 +115,18 @@ export async function deleteStaffRecord(key: number) {
     method: 'DELETE',
     headers: { 'x-csrf-token': Cookies.get('csrfToken') },
   });
+}
+
+// 进货 -- 更新库存表
+export async function updateStockMsg(params: any) {
+  return request<API.createVisitStateType>(`/capi/v2/stock`, {
+    method: 'POST',
+    data: params,
+    headers: { 'x-csrf-token': Cookies.get('csrfToken') },
+  });
+}
+
+// 获取库存数据
+export async function getStock() {
+  return request<stockItem[]>('/capi/v2/stock');
 }

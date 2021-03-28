@@ -1,5 +1,6 @@
 import React from 'react';
 import { Pie } from '@ant-design/charts';
+import { PieChartsConfig } from '@/components/PieCharts/config';
 
 const DemoDonut: React.FC = () => {
   const data = [
@@ -21,25 +22,8 @@ const DemoDonut: React.FC = () => {
     },
   ];
   const config: any = {
-    autoFit: true,
-    height: 250,
     data,
-    angleField: 'value',
-    colorField: 'type',
-    radius: 0.8,
-    innerRadius: 0.64,
-    label: {
-      type: 'inner',
-      content: '{value}',
-      autoRotate: false,
-      style: {
-        fill: '#333',
-        stroke: '#fff',
-        strokeWidth: 1,
-        shadowColor: '#fff',
-        shadowBlur: 4,
-      },
-    },
+    ...PieChartsConfig,
   };
   return <Pie {...config} />;
 };

@@ -113,6 +113,13 @@
     component: './Hr',
   },
   {
+    path: '/stock_management',
+    name: '库存管理',
+    icon: 'ShopOutlined',
+    access: 'canAdmin',
+    component: './Stock',
+  },
+  {
     component: './404',
   },
 ];

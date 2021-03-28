@@ -28,7 +28,7 @@ const defaultObj: detailsObj = {
 };
 
 const date = new Date();
-const now =
+export const now =
   date.getFullYear() +
   '-' +
   (date.getMonth() + 1).toString().padStart(2, '0') +

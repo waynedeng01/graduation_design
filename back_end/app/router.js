@@ -15,6 +15,8 @@ module.exports = app => {
   app.router.resources('hr', '/capi/v2/hr', controller.hr);
   // 收费管理
   app.router.resources('bill', '/capi/v2/bill', controller.bill);
+  // 库存管理
+  app.router.resources('stock', '/capi/v2/stock', controller.stock);
 
   // 单独隔离的出来的路由
   app.router.get('/capi/v2/idCard', controller.live.getIdCard);
