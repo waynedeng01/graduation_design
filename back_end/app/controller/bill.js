@@ -13,6 +13,11 @@ class BillController extends Controller {
     };
   }
 
+  async index() {
+    const { ctx } = this;
+    ctx.body = await ctx.service.bill.getStatisticData();
+  }
+
   async show() {
     const { ctx } = this;
     ctx.body = await ctx.service.bill.show({

@@ -1,7 +1,15 @@
 // 来访信息相关API
 import request from 'umi-request';
 import Cookies from 'js-cookie';
-import { createCare, createCosts, createRule, liveRecord, StaffDetail, stockItem } from '@/const';
+import {
+  AllStatistics,
+  createCare,
+  createCosts,
+  createRule,
+  liveRecord,
+  StaffDetail,
+  stockItem,
+} from '@/const';
 
 export async function createVisit(params: createRule) {
   return request<API.createVisitStateType>('/capi/v2/visit', {
@@ -44,6 +52,11 @@ export async function createCostsRecord(params: createCosts) {
     data: params,
     headers: { 'x-csrf-token': Cookies.get('csrfToken') },
   });
+}
+
+// 获取公司收支明细
+export async function getStatistics() {
+  return request<{ data: AllStatistics }>('/capi/v2/bill');
 }
 
 // 更新消费时间

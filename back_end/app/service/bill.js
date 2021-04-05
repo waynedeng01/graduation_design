@@ -21,7 +21,86 @@ function getAccPrice(days, type) {
   return price;
 }
 
+// 计算累加值
+function computedAdd(arr) {
+  if (!arr.length) return 0;
+  return arr.map(item => item.costs).reduce((acc, cur) => acc + cur);
+}
+
+function getSql(type, value) {
+  if (type === 'line') {
+    return `
+    SELECT
+    SUM(costs) as costs,
+    CONCAT(YEAR(costs_date),'-',MONTH(costs_date)) AS releaseYearMonth
+    FROM inout_msg
+    where inout_type = '${value}'
+    GROUP BY releaseYearMonth`;
+  }
+  if (type === 'yes') {
+    return `select costs from inout_msg
+    where date(costs_date) = date_sub(curdate(),interval 1 day)
+    and inout_type = '${value}'`;
+  }
+}
+
+// 计算利润
+function getProfitList(lineMonthInArr, lineMonthOutArr) {
+  const res = [];
+  if (lineMonthOutArr.length > lineMonthInArr.length) {
+    lineMonthOutArr.forEach(outItem => {
+      const i = lineMonthInArr.find(inItem => inItem.releaseYearMonth === outItem.releaseYearMonth);
+      if (!i) {
+        res.push({
+          month: outItem.releaseYearMonth,
+          value: 0 - outItem.costs,
+        });
+        return;
+      }
+      const profit = i.costs - outItem.costs;
+      res.push({
+        month: i.releaseYearMonth,
+        value: profit,
+      });
+    });
+  } else {
+    lineMonthInArr.forEach(inItem => {
+      const i = lineMonthOutArr.find(outItem => inItem.releaseYearMonth === outItem.releaseYearMonth);
+      if (!i) {
+        // 支出为0
+        // 最后res的长度应该保持为两者中大的那一个数组长度
+        res.push({
+          month: inItem.releaseYearMonth,
+          value: inItem.costs,
+        });
+        return;
+      }
+      const profit = inItem.costs - i.costs;
+      res.push({
+        month: inItem.releaseYearMonth,
+        value: profit,
+      });
+    });
+  }
+  return res;
+}
+
 class BillService extends Service {
+  async getStatisticData() {
+    const yesInStr = getSql('yes', 'in');
+    const yesOutStr = getSql('yes', 'out');
+    // 聚合全年利润
+    const lineMonthInArr = await this.app.mysql.query(getSql('line', 'in'));
+    const lineMonthOutArr = await this.app.mysql.query(getSql('line', 'out'));
+    const stockOut = computedAdd(await this.app.mysql.select('inout_msg', { where: { inout_type: 'out', costs_type: 'stock' } }));
+    const salaryOut = computedAdd(await this.app.mysql.select('inout_msg', { where: { inout_type: 'out', costs_type: 'salary' } }));
+    const yesInCosts = computedAdd(await this.app.mysql.query(`${yesInStr}`));
+    const yesOutCosts = computedAdd(await this.app.mysql.query(`${yesOutStr}`));
+    return {
+      data: { yesInCosts, yesOutCosts, dataList: [{ type: 'stock', value: stockOut }, { type: 'salary', value: salaryOut }], lineChartList: getProfitList(lineMonthInArr, lineMonthOutArr) },
+    };
+  }
+
   // 通过身份证查询
   async show(params) {
     const user = await this.app.mysql.get('live_msg', { idCard: params.id });

@@ -1,15 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ProCard, { StatisticCard } from '@ant-design/pro-card';
 import RcResizeObserver from 'rc-resize-observer';
 import Ring from './charts/Ring';
 import Line from './charts/Line';
 import ChartTable from './charts/ChartTable';
-
-const { Statistic } = StatisticCard;
+import { LineChartData, PieChartsData } from '@/const';
+import { getStatistics } from '@/services/service';
 
 export default () => {
   const [responsive, setResponsive] = useState(false);
+  const [dataList, setDataList] = useState<PieChartsData[]>([]);
+  const [lineList, setLineList] = useState<LineChartData[]>([]);
+  const [yesIn, setYesIn] = useState<number>(0);
+  const [yesOut, setYesOut] = useState<number>(0);
   const date = new Date();
+  useEffect(() => {
+    getStatistics().then(({ data }) => {
+      const { dataList, yesInCosts, yesOutCosts, lineChartList } = data;
+      setYesIn(yesInCosts);
+      setYesOut(yesOutCosts);
+      setDataList(dataList);
+      setLineList(lineChartList);
+    });
+  }, []);
 
   return (
     <RcResizeObserver
@@ -31,15 +44,7 @@ export default () => {
               <StatisticCard
                 statistic={{
                   title: '昨日收入',
-                  value: 234,
-                  suffix: '.00',
-                  description: <Statistic title="较本月平均收入" value="8.04%" trend="down" />,
-                }}
-              />
-              <StatisticCard
-                statistic={{
-                  title: '本月累计收入',
-                  value: 234,
+                  value: yesIn,
                   suffix: '.00',
                 }}
               />
@@ -48,26 +53,19 @@ export default () => {
               <StatisticCard
                 statistic={{
                   title: '昨日支出',
-                  value: '200',
-                  suffix: '.00',
-                }}
-              />
-              <StatisticCard
-                statistic={{
-                  title: '本月累计支出',
-                  value: '134',
+                  value: yesOut,
                   suffix: '.00',
                 }}
               />
             </ProCard>
           </ProCard>
-          <StatisticCard title="全年利润走势" chart={<Line height={250} />} />
+          <StatisticCard title="全年利润走势" chart={<Line height={250} list={lineList} />} />
         </ProCard>
         <StatisticCard
-          title="月支出占比情况"
+          title="支出占比情况"
           chart={
             <>
-              <Ring />
+              <Ring dataList={dataList} />
               <ChartTable />
             </>
           }

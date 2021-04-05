@@ -122,3 +122,31 @@ export type StockPieProps = {
   fruitNum: number;
   doctorNum: number;
 };
+
+export type PieChartsData = {
+  type: string;
+  value: number;
+};
+
+export type LineChartData = {
+  month: string;
+  value: number;
+};
+
+export type PieChartsProps = {
+  dataList: PieChartsData[];
+};
+
+export type LineChartsProps = {
+  height?: number;
+  autoFit?: boolean;
+  list: LineChartData[];
+};
+
+// 公司收支明细接口返回值
+export type AllStatistics = {
+  yesInCosts: number;
+  yesOutCosts: number;
+  dataList: PieChartsData[];
+  lineChartList: LineChartData[];
+};
