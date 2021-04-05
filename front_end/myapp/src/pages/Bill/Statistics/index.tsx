@@ -4,23 +4,36 @@ import RcResizeObserver from 'rc-resize-observer';
 import Ring from './charts/Ring';
 import Line from './charts/Line';
 import ChartTable from './charts/ChartTable';
-import { LineChartData, PieChartsData } from '@/const';
+import { LineChartData, PieChartsData, tableData, tableListItem } from '@/const';
 import { getStatistics } from '@/services/service';
+
+function normalizeList(list: tableListItem[], income: number): tableData[] | [] {
+  if (!list.length) return [];
+  const res: tableData[] = list.map(({ costs_date, costs }, index) => ({
+    key: index.toString(),
+    name: new Date(costs_date).toLocaleDateString(),
+    percent: costs / income,
+    flow: costs,
+  }));
+  return res;
+}
 
 export default () => {
   const [responsive, setResponsive] = useState(false);
   const [dataList, setDataList] = useState<PieChartsData[]>([]);
   const [lineList, setLineList] = useState<LineChartData[]>([]);
+  const [tableDataList, setTableList] = useState<tableData[]>([]);
   const [yesIn, setYesIn] = useState<number>(0);
   const [yesOut, setYesOut] = useState<number>(0);
   const date = new Date();
   useEffect(() => {
     getStatistics().then(({ data }) => {
-      const { dataList, yesInCosts, yesOutCosts, lineChartList } = data;
+      const { dataList, yesInCosts, yesOutCosts, lineChartList, tableDataList, income } = data;
       setYesIn(yesInCosts);
       setYesOut(yesOutCosts);
       setDataList(dataList);
       setLineList(lineChartList);
+      setTableList(normalizeList(tableDataList, income));
     });
   }, []);
 
@@ -66,7 +79,7 @@ export default () => {
           chart={
             <>
               <Ring dataList={dataList} />
-              <ChartTable />
+              <ChartTable tableDataList={tableDataList} />
             </>
           }
         />

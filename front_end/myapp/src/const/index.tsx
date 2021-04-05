@@ -133,6 +133,21 @@ export type LineChartData = {
   value: number;
 };
 
+export type tableData = {
+  key: string;
+  name: string;
+  percent: number;
+  flow: number;
+};
+
+export type tableListItem = {
+  id: string;
+  costs: number;
+  costs_date: string;
+  inout_type: string;
+  costs_type: string;
+};
+
 export type PieChartsProps = {
   dataList: PieChartsData[];
 };
@@ -143,10 +158,16 @@ export type LineChartsProps = {
   list: LineChartData[];
 };
 
+export type tableDataProps = {
+  tableDataList: tableData[];
+};
+
 // 公司收支明细接口返回值
 export type AllStatistics = {
   yesInCosts: number;
   yesOutCosts: number;
   dataList: PieChartsData[];
   lineChartList: LineChartData[];
+  tableDataList: tableListItem[];
+  income: number;
 };

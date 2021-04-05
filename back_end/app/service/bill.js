@@ -92,12 +92,30 @@ class BillService extends Service {
     // 聚合全年利润
     const lineMonthInArr = await this.app.mysql.query(getSql('line', 'in'));
     const lineMonthOutArr = await this.app.mysql.query(getSql('line', 'out'));
+    // 支出占比情况
     const stockOut = computedAdd(await this.app.mysql.select('inout_msg', { where: { inout_type: 'out', costs_type: 'stock' } }));
     const salaryOut = computedAdd(await this.app.mysql.select('inout_msg', { where: { inout_type: 'out', costs_type: 'salary' } }));
+    // 昨日收支情况
     const yesInCosts = computedAdd(await this.app.mysql.query(`${yesInStr}`));
     const yesOutCosts = computedAdd(await this.app.mysql.query(`${yesOutStr}`));
+    // 消费排行
+    const rankList = await this.app.mysql.select('inout_msg', {
+      orders: [[ 'costs', 'desc' ]],
+      limit: 3,
+    });
+    const allIncome = await this.app.mysql.query(`
+    SELECT
+    SUM(costs) as costs
+    FROM inout_msg
+    where inout_type = 'in'`);
     return {
-      data: { yesInCosts, yesOutCosts, dataList: [{ type: 'stock', value: stockOut }, { type: 'salary', value: salaryOut }], lineChartList: getProfitList(lineMonthInArr, lineMonthOutArr) },
+      data: {
+        yesInCosts, yesOutCosts,
+        dataList: [{ type: 'stock', value: stockOut }, { type: 'salary', value: salaryOut }],
+        lineChartList: getProfitList(lineMonthInArr, lineMonthOutArr),
+        tableDataList: rankList,
+        income: allIncome[0].costs,
+      },
     };
   }
 

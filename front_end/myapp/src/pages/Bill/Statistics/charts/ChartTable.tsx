@@ -1,31 +1,13 @@
 import React from 'react';
 import { Table } from 'antd';
 import MiniProgress from './MiniProgress';
+import { tableDataProps } from '@/const';
 
-export default () => {
-  const data = [
-    {
-      key: '1',
-      name: 'John Brown',
-      percent: 0.2,
-      flow: 2335,
-    },
-    {
-      key: '2',
-      name: 'Jim Green',
-      percent: 0.4,
-      flow: 3245,
-    },
-    {
-      key: '3',
-      name: 'Joe Black',
-      percent: 0.6,
-      flow: 3445,
-    },
-  ];
+export default (props: tableDataProps) => {
+  const { tableDataList: data } = props;
   const columns = [
     {
-      title: '姓名',
+      title: '消费日期',
       dataIndex: 'name',
       key: 'name',
       render: (text: string) => <a>{text}</a>,
@@ -37,7 +19,7 @@ export default () => {
       render: (percent: number) => <MiniProgress percent={percent} />,
     },
     {
-      title: '消费',
+      title: '金额',
       dataIndex: 'flow',
       key: 'flow',
     },

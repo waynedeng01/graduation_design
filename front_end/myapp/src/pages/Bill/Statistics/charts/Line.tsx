@@ -13,8 +13,6 @@ export default (props: LineChartsProps) => {
     label: {},
     yAxis: {
       nice: true,
-      // min: 0,
-      // max: 15,
     },
     point: {
       size: 5,
